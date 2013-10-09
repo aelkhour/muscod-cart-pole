@@ -1,0 +1,11 @@
+CMakeFiles/*
+CTestTestfile.cmake
+CMake/*
+Makefile
+CMakeCache.txt
+DartConfiguration.tcl
+RES/*
+callgrind.out.*
+valgrind.log
+cmake_install.cmake
+libcart-pole.so

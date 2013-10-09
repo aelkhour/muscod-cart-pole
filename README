@@ -1,0 +1,63 @@
+MUSCOD Sample application - Information
+
+Hint: please look into ~/MUSCOD-II/MC2/Src/DOC/MANUAL/uman.pdf for more information.
+
+== 0. Prerequisites ==
+
+Install MUSCOD-II.
+
+Get the MUSCOD_SAMPLE sources. Make sure you have a version compatible to your
+MUSCOD sources (e.g. same "tag" or both latest development version from
+trunk).
+
+It is assumed you have the source in "~/MUSCOD-II/Apps/MC2_SAMPLE/Src".
+
+== 1. Configure MUSCOD_SAMPLE ==
+
+Create a new directory "~/MUSCOD-II/Apps/MC2_SAMPLE/Debug"
+Then cd to this directory and run the CMake GUI
+
+# ccmake ../Src
+
+When you press "c" for the first time to configure, CMake will complain that
+MUSCOD_DIR needs to be set. Placate CMake with one of your MUSCOD_* binary directories
+(e.g. "~/MUSCOD-II/MC2/Debug").
+
+When you press "c" again, CMake will transfer configuration options form your
+MUSCOD installation to the test examples.
+
+Press "g" to generate the makefiles.
+
+== 2. Compile MUSCOD_SAMPLE ==
+
+Type:
+# make
+
+== 3. Configure directories ==
+
+For MUSCOD-II to run properly you need the following subdirectories in the
+current directory (assuming it is ~/MUSCOD-II/Apps/MC2_SAMPLE/Debug):
+  ./DAT/  which contains the sample.dat file (you find this file in the
+          ../Src/DAT directory)
+	./RES/  into which the results will be stored
+
+== 4. Run examples ==
+
+Try:
+
+# muscod
+
+If this does fail, make sure to adjust your $PATH variable such that the
+MUSCOD executable 'muscod' is being found.
+
+Otherwise run
+
+# muscod sample 
+
+Have fun.
+
+== 5. Plot output ==
+
+The file default.plot defines the types of plot that are created (screen,
+PostScript, GIF) and it needs to be in the same directory where you call
+muscod. Adjust it at your own will to get the desired output.
