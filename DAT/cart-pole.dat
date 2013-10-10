@@ -217,7 +217,7 @@ options_frstart
 options_frmax
 0
 options_itmax
-200
+1000
 options_plevel_screen
 0
 options_plevel_file
