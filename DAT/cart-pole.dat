@@ -184,7 +184,7 @@ libeval
 eval_ind
 
 libind
-0: ind_daesol
+0: ind_rkf45
 
 libqps
 qps_qpopt

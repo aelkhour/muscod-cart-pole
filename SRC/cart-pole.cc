@@ -42,10 +42,6 @@ static void mfcn(double *ts, double *sd, double *sa, double *p,
 static void ffcn(double *t, double *xd, double *xa, double *u,
 		 double *p, double *rhs, double *rwh, long *iwh, long *info);
 
-/** \brief Right hand side of the differential equation */
-static void gfcn(double *t, double *xd, double *xa, double *u,
-		 double *p, double *rhs, double *rwh, long *iwh, long *info);
-
 /** \brief Constraints at interior shooting nodes */
 static void rdfcn_i (double *ts, double *sd, double *sa, double *u,
 		     double *p, double *pr, double *res, long *dpnd, long *info);
@@ -97,7 +93,7 @@ void def_model(void)
 #define  NRCE   0  /* Number of coupled equality constraints */
 
 #define  NXD    4 /* Number of differential states */
-#define  NXA    2 /* Number of algebraic states */
+#define  NXA    0 /* Number of algebraic states */
 #define  NU     1 /* Number of controls */
 #define  NPR    0  /* Number of local parameters */
 
@@ -113,7 +109,7 @@ void def_model(void)
 	     0,
 	     NXD, NXA, NU,
 	     NULL, lfcn,
-	     0, 0, 0, NULL, ffcn, gfcn,
+	     0, 0, 0, NULL, ffcn, NULL,
 	     NULL, NULL
 	     );
   /* Define constraints at all shooting nodes */
@@ -165,21 +161,12 @@ static void ffcn(double *t, double *xd, double *xa, double *u,
 {
   rhs[0] = xd[2];
   rhs[1] = xd[3];
-  rhs[2] = xa[0];
-  rhs[3] = xa[1];
-}
-
-static void gfcn(double *t, double *xd, double *xa, double *u,
-		 double *p, double *rhs, double *rwh, long *iwh, InfoPtr *info)
-{
-  rhs[0] = (M + m) * xa[0]
-    - m * l * (xa[1] * cos (xd[1])
-	       - xd[3] * xd[3] * sin (xd[1]))
-    - u[0];
-  rhs[1] = l * xa[1]
-    - xa[0] * cos (xd[1])
-    - g * sin (xd[1])
-    + mu_th / (m * l) * xd[3];
+  rhs[2] = (u[0] + m * (g * sin (xd[1]) - mu_th / (m * l) * xd[3]) * cos (xd[1])
+	    - m * l * xd[3] * xd[3] * sin (xd[1]))
+    / (M + m) / (1 - m / (M + m) * cos (xd[1]) * cos (xd[1]));
+  rhs[3] = ((u[0] - m * l * xd[3] * xd[3] * sin (xd[1])) / (M + m) * cos (xd[1])
+	    + g * sin (xd[1]) - mu_th / (m * l) * xd[1])
+    / l / (1 - (m * l) / (M + m) * cos (xd[1]) * cos (xd[1]));
 }
 
 static void mplo ( double *t, double *sd, double *sa, double *u,
