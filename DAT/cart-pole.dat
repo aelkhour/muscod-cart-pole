@@ -12,6 +12,9 @@ nshoot
 
 
 *  model stage duration start values, scale factors, and bounds
+h_name
+0: duration (s)
+
 h
 0: 3
 
@@ -39,6 +42,12 @@ s_spec
 1
 
 *  differential state start values, scale factors, and bounds
+
+xd_name
+0: cart position (m)
+1: pole angle (rad)
+2: cart linear velocity (m/s)
+3: pole angular velocity (rad/s)
 	
 sd(*,S)
 0: 0.0
@@ -113,6 +122,9 @@ sa_fix(*,E)
 1: 1
 
 *  control parameterization types 
+u_name
+0: cart engine force (N)
+
 u_type(*)
 0: 1
 
@@ -142,7 +154,7 @@ rd_sca(0,*)
 * 1: 1.0
 
 of_name
-sum of squared accelerations
+cost function
 
 *  objective scale and expected range; # of values in history plot
 of_sca
