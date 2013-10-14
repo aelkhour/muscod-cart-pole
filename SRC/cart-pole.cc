@@ -151,22 +151,23 @@ static void lfcn(double *t, double *xd, double *xa, double *u,
 
 // Dynamic system parameters.
 static const double g = 9.81;
-static const double m = 1;
-static const double M = 1;
-static const double l = 1;
+static const double m = 5.1057;
+static const double M = 9.4248;
+static const double l = 0.3;
 static const double mu_th = 0.1; // damping on \dot{\theta}
+static const double gear_ratio = 100.; // Actuator reduction ratio
 
 static void ffcn(double *t, double *xd, double *xa, double *u,
 		 double *p, double *rhs, double *rwh, long *iwh, long *info)
 {
   rhs[0] = xd[2];
   rhs[1] = xd[3];
-  rhs[2] = (u[0] + m * (g * sin (xd[1]) - mu_th / (m * l) * xd[3]) * cos (xd[1])
-	    - m * l * xd[3] * xd[3] * sin (xd[1]))
-    / (M + m) / (1 - m / (M + m) * cos (xd[1]) * cos (xd[1]));
-  rhs[3] = ((u[0] - m * l * xd[3] * xd[3] * sin (xd[1])) / (M + m) * cos (xd[1])
+  rhs[3] = ((gear_ratio * u[0] - m * l * xd[3] * xd[3] * sin (xd[1]))
+	    / (M + m) * cos (xd[1])
 	    + g * sin (xd[1]) - mu_th / (m * l) * xd[1])
-    / l / (1 - (m * l) / (M + m) * cos (xd[1]) * cos (xd[1]));
+    / l / (1 - m / (M + m) * cos (xd[1]) * cos (xd[1]));
+  rhs[2] = (u[0] + m * l * (rhs[3] * cos (xd[1]) - xd[3] * xd[3] * sin (xd[1])))
+    / (M + m);
 }
 
 static void mplo ( double *t, double *sd, double *sa, double *u,
